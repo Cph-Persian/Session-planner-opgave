@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { useRole } from "@/app/context/RoleContext";
 import { useState, useEffect } from "react";
+import { Container, Group, Button, Text, Box } from "@mantine/core";
+import { usePathname } from "next/navigation";
 
 export function ConditionalNavBar() {
-  const { role } = useRole();
+  const { role, isTeacherLoggedIn, setRole, setIsTeacherLoggedIn } = useRole();
   const [isHydrated, setIsHydrated] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setIsHydrated(true);
@@ -14,20 +17,78 @@ export function ConditionalNavBar() {
 
   if (!isHydrated) return null;
 
+  const navLinks = [
+    { href: "/", label: "Hjem" },
+    { href: "/om", label: "Om" },
+    { href: "/sessioner", label: "Sessioner" },
+    { href: "/kontakt", label: "Kontakt" },
+  ];
+
   return (
-    <header style={{ padding: "1rem", borderBottom: "1px solid #ddd" }}>
-      <nav style={{ display: "flex", gap: "1rem" }}>
-        <Link href="/">Home</Link>
-        <Link href="/om">Om</Link>
-        <Link href="/sessioner">Sessioner</Link>
-        <Link href="/kontakt">Kontakt</Link>
-        <Link href="/login">Login</Link>
-        
-        {/* Only show "Opret Session" link if user is a teacher and logged in */}
-        {role === 'teacher' && (
-          <Link href="/events/createevent">Opret Session</Link>
-        )}
-      </nav>
-    </header>
+    <Box
+      component="header"
+      style={{
+        borderBottom: "1px solid var(--mantine-color-gray-3)",
+        background: "var(--mantine-color-white)",
+      }}
+    >
+      <Container size="xl">
+        <Group justify="space-between" h={70} gap="md">
+          <Text
+            component={Link}
+            href="/"
+            fw={700}
+            size="xl"
+            c="blue"
+            style={{ textDecoration: "none" }}
+          >
+            Session Planner
+          </Text>
+
+          <Group gap="xs">
+            {navLinks.map((link) => (
+              <Button
+                key={link.href}
+                component={Link}
+                href={link.href}
+                variant={pathname === link.href ? "light" : "subtle"}
+                color={pathname === link.href ? "blue" : "gray"}
+                size="sm"
+              >
+                {link.label}
+              </Button>
+            ))}
+
+            {!isTeacherLoggedIn ? (
+              <Button
+                component={Link}
+                href="/login"
+                variant="light"
+                color="blue"
+                size="sm"
+              >
+                Login
+              </Button>
+            ) : (
+              <Button
+                variant="subtle"
+                color="gray"
+                size="sm"
+                onClick={async () => {
+                  const { supabase } = await import("@/app/lib/supabaseClient");
+                  await supabase.auth.signOut();
+                  // Clear role context
+                  setRole(null);
+                  setIsTeacherLoggedIn(false);
+                  window.location.href = "/";
+                }}
+              >
+                Logout
+              </Button>
+            )}
+          </Group>
+        </Group>
+      </Container>
+    </Box>
   );
 }

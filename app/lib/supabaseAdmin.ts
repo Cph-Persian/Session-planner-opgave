@@ -14,6 +14,13 @@ export function getSupabaseAdmin(): SupabaseClient {
     );
   }
 
-  _adminClient = createClient(url, serviceKey);
+  // Create client with service role key and disable RLS
+  _adminClient = createClient(url, serviceKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
+  
   return _adminClient;
 }
