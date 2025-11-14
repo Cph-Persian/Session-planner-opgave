@@ -34,7 +34,7 @@ export default function Kontakt() {
             </Group>
 
             <Text>
-              Husk at kontakte os via. din skole e-mail for hurtigere support.
+              Husk at kontakte os via. din skole e-mail for hurtigere support - vi vil gerne sikre os, at du er en del af vores brugerbase.
             </Text>
           </Stack>
         </Card>
