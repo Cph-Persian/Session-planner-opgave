@@ -67,7 +67,7 @@ export function ConditionalNavBar() {
                 color="blue"
                 size="sm"
               >
-                Login
+                Lærer Login
               </Button>
             ) : (
               <Button

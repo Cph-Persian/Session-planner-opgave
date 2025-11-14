@@ -34,6 +34,51 @@ export async function POST(req: Request) {
   }
 }
 
+export async function PATCH(req: Request) {
+  try {
+    const body = await req.json();
+    const { sessionId, is_cancelled } = body;
+
+    if (!sessionId) {
+      return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
+    }
+
+    console.log("PATCH request for session ID:", sessionId, "is_cancelled:", is_cancelled);
+
+    const supabase = getSupabaseAdmin();
+
+    // First check if session exists
+    const { data: existingSession, error: checkError } = await supabase
+      .from("sessions")
+      .select("id, title")
+      .eq("id", sessionId)
+      .single();
+
+    if (checkError || !existingSession) {
+      return NextResponse.json({ error: "Session not found" }, { status: 404 });
+    }
+
+    // Update the session
+    const { data, error } = await supabase
+      .from("sessions")
+      .update({ is_cancelled: is_cancelled === true })
+      .eq("id", sessionId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Update error:", error);
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ success: true, updated: data });
+  } catch (err: any) {
+    const message = err?.message || "Internal server error";
+    console.error("/api/sessions PATCH error:", err);
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
