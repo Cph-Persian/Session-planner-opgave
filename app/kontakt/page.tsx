@@ -32,6 +32,10 @@ export default function Kontakt() {
                 <Text size="sm">+45 12 34 56 78</Text>
               </div>
             </Group>
+
+            <Text>
+              Husk at kontakte os via. din skole e-mail for hurtigere support.
+            </Text>
           </Stack>
         </Card>
       </Stack>
