@@ -1,6 +1,7 @@
 "use client";
 
-import { Container, Title, Text, Stack, Card } from "@mantine/core";
+import { Container, Title, Text, Stack, Card, Box } from "@mantine/core";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -10,9 +11,32 @@ export default function About() {
         
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Stack gap="md">
+            <Box
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "400px",
+                borderRadius: "var(--mantine-radius-sm)",
+                overflow: "hidden",
+                marginBottom: "var(--mantine-spacing-md)",
+              }}
+            >
+              <Image
+                src="/img/img_1.jpeg"
+                alt="Session Planner"
+                fill
+                style={{
+                  objectFit: "cover",
+                }}
+                sizes="100vw"
+                priority
+              />
+            </Box>
+
             <Text size="lg">
               Session Planner er en moderne løsning til planlægning og deling af undervisningssessioner.
             </Text>
+
             <Text>
               Systemet er designet til at gøre det nemt for lærere at oprette og administrere sessioner,
               mens studerende kan se alle tilgængelige sessioner på en overskuelig måde.

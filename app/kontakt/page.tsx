@@ -20,7 +20,7 @@ export default function Kontakt() {
               <div>
                 <Text fw={600} size="sm">Email</Text>
                 <Anchor href="mailto:support@sessionplanner.dk" size="sm">
-                  support@sessionplanner.dk
+                  efteruddannelse-studievejledning@ek.dk
                 </Anchor>
               </div>
             </Group>
@@ -29,7 +29,7 @@ export default function Kontakt() {
               <IconPhone size={24} color="var(--mantine-color-blue-6)" />
               <div>
                 <Text fw={600} size="sm">Telefon</Text>
-                <Text size="sm">+45 12 34 56 78</Text>
+                <Text size="sm">+45 46 46 00 00</Text>
               </div>
             </Group>
 
